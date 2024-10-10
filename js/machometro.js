@@ -92,12 +92,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	const calculateScore = (answers) => {
 		const correctAnswers = answers.filter((answer, index) => answer === questions[index].correctAnswer);
-		return (correctAnswers.length / questions.length) * 100;
+		return correctAnswers.length * 10;
 	};
 
 	const getResult = (score) => {
-		if (score < 33) return 'malo';
-		if (score < 66) return 'regular';
+		const totalQuestions = questions.length * 10;
+		const percentage = (score / totalQuestions) * 100;
+
+		if (percentage < 33.33) return 'malo';
+		if (percentage < 66.67) return 'regular';
 		return 'bueno';
 	};
 
@@ -140,9 +143,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	};
 
 	const renderResult = (score, resultType) => {
+		const totalQuestions = questions.length * 10;
 		const templateId = `resultado-${resultType}-template`;
 		const resultData = {
-			'result-score': `Obtuviste ${score.toFixed(1)}% de respuestas correctas`
+			'result-score': `Obtuviste ${score} de ${totalQuestions} puntos.`
 		};
 		const resultElement = renderTemplate(templateId, resultData);
 		const carouselItem = resultElement.querySelector('.carousel-item');
